@@ -23,6 +23,8 @@
   "homepage": "https://github.com/z0mt3c/hapi-mongodb-profiles",
   "dependencies": {
     "async": "^0.9.0",
+    "hoek": "^2.4.1",
+    "lodash": "^2.4.1",
     "mongodb": "^1.4.8"
   },
   "devDependencies": {
