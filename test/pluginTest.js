@@ -3,7 +3,7 @@ var Lab = require('lab');
 var lab = exports.lab = Lab.script();
 var describe = lab.experiment;
 var it = lab.test;
-var plugin = require('../lib');
+var plugin = require('../index');
 var Hapi = require('hapi');
 var MongoDB = require('mongodb');
 
