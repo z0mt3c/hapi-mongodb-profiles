@@ -22,7 +22,7 @@ server.pack.register({
         ]
     }
 }
-``
+```
 
 ## Get database
 
