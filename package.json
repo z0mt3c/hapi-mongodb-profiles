@@ -1,0 +1,43 @@
+{
+  "name": "hapi-mongodb-profiles",
+  "version": "1.0.0",
+  "description": "Simple hapi plugin to manage mongodb connection profiles.",
+  "main": "index.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:z0mt3c/hapi-mongodb-profiles.git"
+  },
+  "keywords": [
+    "hapi",
+    "mongodb",
+    "plugin"
+  ],
+  "author": "Timo Behrmann",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/z0mt3c/hapi-mongodb-profiles/issues"
+  },
+  "homepage": "https://github.com/z0mt3c/hapi-mongodb-profiles",
+  "dependencies": {
+    "async": "^0.9.0",
+    "mongodb": "^1.4.8"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-release": "^0.7.0",
+    "grunt-shell": "^0.7.0",
+    "hapi": "^6.4.0",
+    "jshint-stylish": "^0.4.0",
+    "lab": "^4.0.0",
+    "nipple": "^2.5.3",
+    "sinon": "^1.10.3"
+  },
+  "peerDependencies": {
+    "hapi": "^6.0.0"
+  }
+}
