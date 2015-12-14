@@ -12,6 +12,7 @@ Simple hapi plugin to manage mongodb connection profiles
 server.pack.register({
     plugin: require('hapi-mongodb-profiles'),
     options: {
+        // decorateRequest: false // default: true
         options: {
             // default options for all profiles, will be extended by local profile options
         }
@@ -28,11 +29,14 @@ server.pack.register({
 
 ```js
 server.plugins['hapi-mongodb-profiles'].db('profileName')
+request.db('profileName')
+request.db() // first database/profile will be returned
 ```
 
 ## Get collection
 
 ```js
 server.plugins['hapi-mongodb-profiles'].collection('profileName', 'collectionName')
+request.collection('test') // first database/profile will be used
+request.collection('profile', 'test')
 ```
-

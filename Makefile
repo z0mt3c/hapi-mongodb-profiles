@@ -1,4 +1,7 @@
 
+standard:
+	./node_modules/.bin/standard
+
 test:
 	./node_modules/.bin/lab
 
@@ -8,4 +11,4 @@ test-cov:
 test-cov-html:
 	./node_modules/.bin/lab -r html -o ./coverage.html
 
-.PHONY: test test-cov test-cov-html
+.PHONY: standard test test-cov test-cov-html
