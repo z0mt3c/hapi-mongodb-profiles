@@ -169,7 +169,7 @@ describe('utils', () => {
       server.route({
         method: 'GET',
         path: '/test',
-        handler(request, reply) {
+        handler (request, reply) {
           expect(request.db().testDb).to.be.true
           expect(request.db('test').testDb).to.be.true
           mongoCollection.withArgs('test').returns('abc')
