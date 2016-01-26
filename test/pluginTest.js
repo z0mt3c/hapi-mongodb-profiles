@@ -1,33 +1,35 @@
-var sinon = require('sinon')
-var Lab = require('lab')
-var Code = require('code')
-var expect = Code.expect
-var lab = exports.lab = Lab.script()
-var describe = lab.experiment
-var it = lab.test
-var plugin = require('../index')
-var Hapi = require('hapi')
-var MongoDB = require('mongodb')
+'use strict'
 
-describe('utils', function () {
-  it('simple plugin registering', function (done) {
-    var server = new Hapi.Server()
+const sinon = require('sinon')
+const Lab = require('lab')
+const Code = require('code')
+const expect = Code.expect
+let lab = exports.lab = Lab.script()
+const describe = lab.experiment
+const it = lab.test
+const plugin = require('../index')
+const Hapi = require('hapi')
+const MongoDB = require('mongodb')
+
+describe('utils', () => {
+  it('simple plugin registering', done => {
+    const server = new Hapi.Server()
     server.connection({ port: 8000 })
 
     server.register({
       register: plugin,
       options: {}
-    }, function (err) {
+    }, err => {
       expect(err).not.to.exist
       done()
     })
   })
 
-  describe('initialization', function () {
-    var mongoClientConnect
+  describe('initialization', () => {
+    let mongoClientConnect
 
-    lab.beforeEach(function (done) {
-      mongoClientConnect = sinon.stub(MongoDB.MongoClient, 'connect', function (url, options, reply) {
+    lab.beforeEach(done => {
+      mongoClientConnect = sinon.stub(MongoDB.MongoClient, 'connect', (url, options, reply) => {
         if (url.indexOf('fail') !== -1) {
           reply(new Error('failed'))
         } else {
@@ -37,13 +39,13 @@ describe('utils', function () {
       done()
     })
 
-    lab.afterEach(function (done) {
+    lab.afterEach(done => {
       mongoClientConnect.restore()
       done()
     })
 
-    it('it connects with profiles array', function (done) {
-      var server = new Hapi.Server()
+    it('it connects with profiles array', done => {
+      const server = new Hapi.Server()
       server.connection({ port: 8000 })
 
       server.register({
@@ -54,15 +56,15 @@ describe('utils', function () {
             {name: 'test', url: 'hapi://test/db'}
           ]
         }
-      }, function (err) {
+      }, err => {
         expect(err).not.to.exist
         expect(mongoClientConnect.calledWith('hapi://test/db', {}, sinon.match.func)).to.be.true
         done()
       })
     })
 
-    it('it connects with profiles object', function (done) {
-      var server = new Hapi.Server()
+    it('it connects with profiles object', done => {
+      const server = new Hapi.Server()
       server.connection({ port: 8000 })
 
       server.register({
@@ -72,15 +74,15 @@ describe('utils', function () {
             test: {url: 'hapi://test/db'}
           }
         }
-      }, function (err) {
+      }, err => {
         expect(err).not.to.exist
         expect(mongoClientConnect.calledWith('hapi://test/db', {}, sinon.match.func)).to.be.true
         done()
       })
     })
 
-    it('it fails', function (done) {
-      var server = new Hapi.Server()
+    it('it fails', done => {
+      const server = new Hapi.Server()
       server.connection({ port: 8000 })
 
       server.register({
@@ -91,15 +93,15 @@ describe('utils', function () {
             {name: 'test2', url: 'hapi://test/failed'}
           ]
         }
-      }, function (err) {
+      }, err => {
         expect(err).to.exist
         expect(mongoClientConnect.calledWith('hapi://test/failed', {}, sinon.match.func)).to.be.true
         done()
       })
     })
 
-    it('options are passed', function (done) {
-      var server = new Hapi.Server()
+    it('options are passed', done => {
+      const server = new Hapi.Server()
       server.connection({ port: 8000 })
 
       server.register({
@@ -112,7 +114,7 @@ describe('utils', function () {
             {name: 'test', url: 'hapi://test/failed', options: {profileOption: true}}
           ]
         }
-      }, function (err) {
+      }, err => {
         expect(err).to.exist
         expect(mongoClientConnect.calledWith('hapi://test/failed', {
           globalOption: true,
@@ -123,14 +125,14 @@ describe('utils', function () {
     })
   })
 
-  describe('exposed', function () {
-    var mongoClientConnect
-    var mongoCollection
-    var server
+  describe('exposed', () => {
+    let mongoClientConnect
+    let mongoCollection
+    let server
 
-    lab.beforeEach(function (done) {
+    lab.beforeEach(done => {
       mongoCollection = sinon.stub()
-      mongoClientConnect = sinon.stub(MongoDB.MongoClient, 'connect', function (url, options, reply) {
+      mongoClientConnect = sinon.stub(MongoDB.MongoClient, 'connect', (url, options, reply) => {
         reply(null, {collection: mongoCollection, testDb: true})
       })
 
@@ -144,30 +146,30 @@ describe('utils', function () {
             {name: 'test', url: 'hapi://test/db'}
           ]
         }
-      }, function (err) {
+      }, err => {
         expect(err).not.to.exist
         expect(mongoClientConnect.calledWith('hapi://test/db', {}, sinon.match.func)).to.be.true
         done()
       })
     })
 
-    lab.afterEach(function (done) {
+    lab.afterEach(done => {
       mongoClientConnect.restore()
       done()
     })
 
-    it('test', function (done) {
+    it('test', done => {
       expect(server.plugins['hapi-mongodb-profiles'].db('test').testDb).to.be.true
       mongoCollection.withArgs('test').returns('abc')
       expect(server.plugins['hapi-mongodb-profiles'].collection('test', 'test')).to.equal('abc')
       done()
     })
 
-    it('request', function (done) {
+    it('request', done => {
       server.route({
         method: 'GET',
         path: '/test',
-        handler: function (request, reply) {
+        handler(request, reply) {
           expect(request.db().testDb).to.be.true
           expect(request.db('test').testDb).to.be.true
           mongoCollection.withArgs('test').returns('abc')
@@ -177,7 +179,7 @@ describe('utils', function () {
         }
       })
 
-      server.inject('/test', function (res) {
+      server.inject('/test', res => {
         expect(res.result).to.equal('OK')
         done()
       })
