@@ -1,6 +1,6 @@
 {
   "name": "hapi-mongodb-profiles",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Simple hapi plugin to manage mongodb connection profiles.",
   "main": "index.js",
   "scripts": {
