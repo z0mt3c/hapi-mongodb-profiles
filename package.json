@@ -10,13 +10,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:z0mt3c/hapi-mongodb-profiles.git"
+    "url": "git+ssh://git@github.com/z0mt3c/hapi-mongodb-profiles.git"
   },
   "keywords": [
     "hapi",
     "mongodb",
     "plugin"
   ],
+  "engines": {
+    "node": ">=4.0.0"
+  },
   "author": "Timo Behrmann",
   "license": "MIT",
   "bugs": {
@@ -39,5 +42,8 @@
   },
   "peerDependencies": {
     "hapi": ">= 10.x.x"
+  },
+  "directories": {
+    "test": "test"
   }
 }
