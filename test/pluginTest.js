@@ -12,14 +12,14 @@ const Hapi = require('hapi')
 const MongoDB = require('mongodb')
 
 describe('utils', () => {
-  it('simple plugin registering', done => {
+  it('simple plugin registering', (done) => {
     const server = new Hapi.Server()
     server.connection({ port: 8000 })
 
     server.register({
       register: plugin,
       options: {}
-    }, err => {
+    }, (err) => {
       expect(err).not.to.exist
       done()
     })
@@ -28,7 +28,7 @@ describe('utils', () => {
   describe('initialization', () => {
     let mongoClientConnect
 
-    lab.beforeEach(done => {
+    lab.beforeEach((done) => {
       mongoClientConnect = sinon.stub(MongoDB.MongoClient, 'connect', (url, options, reply) => {
         if (url.indexOf('fail') !== -1) {
           reply(new Error('failed'))
@@ -39,12 +39,12 @@ describe('utils', () => {
       done()
     })
 
-    lab.afterEach(done => {
+    lab.afterEach((done) => {
       mongoClientConnect.restore()
       done()
     })
 
-    it('it connects with profiles array', done => {
+    it('it connects with profiles array', (done) => {
       const server = new Hapi.Server()
       server.connection({ port: 8000 })
 
@@ -56,14 +56,14 @@ describe('utils', () => {
             {name: 'test', url: 'hapi://test/db'}
           ]
         }
-      }, err => {
+      }, (err) => {
         expect(err).not.to.exist
         expect(mongoClientConnect.calledWith('hapi://test/db', {}, sinon.match.func)).to.be.true
         done()
       })
     })
 
-    it('it connects with profiles object', done => {
+    it('it connects with profiles object', (done) => {
       const server = new Hapi.Server()
       server.connection({ port: 8000 })
 
@@ -74,14 +74,14 @@ describe('utils', () => {
             test: {url: 'hapi://test/db'}
           }
         }
-      }, err => {
+      }, (err) => {
         expect(err).not.to.exist
         expect(mongoClientConnect.calledWith('hapi://test/db', {}, sinon.match.func)).to.be.true
         done()
       })
     })
 
-    it('it fails', done => {
+    it('it fails', (done) => {
       const server = new Hapi.Server()
       server.connection({ port: 8000 })
 
@@ -93,14 +93,14 @@ describe('utils', () => {
             {name: 'test2', url: 'hapi://test/failed'}
           ]
         }
-      }, err => {
+      }, (err) => {
         expect(err).to.exist
         expect(mongoClientConnect.calledWith('hapi://test/failed', {}, sinon.match.func)).to.be.true
         done()
       })
     })
 
-    it('options are passed', done => {
+    it('options are passed', (done) => {
       const server = new Hapi.Server()
       server.connection({ port: 8000 })
 
@@ -114,7 +114,7 @@ describe('utils', () => {
             {name: 'test', url: 'hapi://test/failed', options: {profileOption: true}}
           ]
         }
-      }, err => {
+      }, (err) => {
         expect(err).to.exist
         expect(mongoClientConnect.calledWith('hapi://test/failed', {
           globalOption: true,
@@ -130,7 +130,7 @@ describe('utils', () => {
     let mongoCollection
     let server
 
-    lab.beforeEach(done => {
+    lab.beforeEach((done) => {
       mongoCollection = sinon.stub()
       mongoClientConnect = sinon.stub(MongoDB.MongoClient, 'connect', (url, options, reply) => {
         reply(null, {collection: mongoCollection, testDb: true})
@@ -146,26 +146,26 @@ describe('utils', () => {
             {name: 'test', url: 'hapi://test/db'}
           ]
         }
-      }, err => {
+      }, (err) => {
         expect(err).not.to.exist
         expect(mongoClientConnect.calledWith('hapi://test/db', {}, sinon.match.func)).to.be.true
         done()
       })
     })
 
-    lab.afterEach(done => {
+    lab.afterEach((done) => {
       mongoClientConnect.restore()
       done()
     })
 
-    it('test', done => {
+    it('test', (done) => {
       expect(server.plugins['hapi-mongodb-profiles'].db('test').testDb).to.be.true
       mongoCollection.withArgs('test').returns('abc')
       expect(server.plugins['hapi-mongodb-profiles'].collection('test', 'test')).to.equal('abc')
       done()
     })
 
-    it('request', done => {
+    it('request', (done) => {
       server.route({
         method: 'GET',
         path: '/test',
@@ -179,7 +179,7 @@ describe('utils', () => {
         }
       })
 
-      server.inject('/test', res => {
+      server.inject('/test', (res) => {
         expect(res.result).to.equal('OK')
         done()
       })
