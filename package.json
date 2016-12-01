@@ -34,7 +34,7 @@
     "mongodb": "^2.1.1"
   },
   "devDependencies": {
-    "hapi": "^13.0.0",
+    "hapi": "^16.0.1",
     "lab": "^10.1.0",
     "nipple": "^2.5.6",
     "sinon": "^1.17.2",
